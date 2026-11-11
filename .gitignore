@@ -1,0 +1,8 @@
+node_modules/
+aiscore.json
+anlikVeri.jsonl
+uyarilar.log
+servis.log
+.env
+*.bak
+yedek/
