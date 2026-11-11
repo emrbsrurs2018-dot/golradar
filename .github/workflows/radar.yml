@@ -1,0 +1,36 @@
+name: radar
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+concurrency:
+  group: radar
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --production
+      - name: aiscore cookie
+        run: printf '%s' "$AISCORE" > aiscore.json
+        env:
+          AISCORE: ${{ secrets.AISCORE_JSON }}
+      - name: radar 5s45dk
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: timeout 20700 node radar.js --log || true
+      - name: durumu kaydet
+        run: |
+          git config user.name radar
+          git config user.email radar@local
+          git add tahminler.json skorlar.json ayarlar.json || true
+          git commit -m "state $(date -u +%m-%d-%H-%M)" || true
+          git push || true
