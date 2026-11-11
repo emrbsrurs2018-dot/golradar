@@ -16,4 +16,4 @@ jobs:
         env:
           AISCORE: ${{ secrets.AISCORE_JSON }}
       - name: test
-        run: node tani2.js
+        run: node tani3.js
